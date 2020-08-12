@@ -99,6 +99,13 @@ Route::group(['middleware' => ['auth', 'activated', 'currentUser', 'activity', '
 
     // Route to upload user avatar.
     Route::post('avatar/upload', ['as' => 'avatar.upload', 'uses' => 'ProfilesController@upload']);
+
+    // Timesheet Routes
+    Route::resource(
+        'timesheet',
+        'TimesheetController'
+    );
+
 });
 
 // Registered, activated, and is admin routes.

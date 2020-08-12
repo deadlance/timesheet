@@ -34,6 +34,18 @@ class RolesTableSeeder extends Seeder
                 'description' => 'Unverified Role',
                 'level'       => 0,
             ],
+
+            /*
+             * Added by John LeVan 5 August 2020
+             *
+             * Roles
+             */
+            [
+                'name'        => 'Manager',
+                'slug'        => 'manager',
+                'description' => 'Manager Role',
+                'level'       => 2,
+            ],
         ];
 
         /*
