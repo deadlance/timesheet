@@ -13,9 +13,11 @@
     @endphp
 
 <!--
+
         <pre>
             {{ json_encode($timesheet_data, JSON_PRETTY_PRINT) }}
         </pre>
+
 -->
 
 
