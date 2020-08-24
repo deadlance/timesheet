@@ -106,6 +106,12 @@ Route::group(['middleware' => ['auth', 'activated', 'currentUser', 'activity', '
         'TimesheetController'
     );
 
+    // Timesheet Routes
+    Route::resource(
+        'entry',
+        'EntryController'
+    );
+
 });
 
 // Registered, activated, and is admin routes.

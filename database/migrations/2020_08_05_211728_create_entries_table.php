@@ -16,8 +16,8 @@ class CreateEntriesTable extends Migration
         Schema::create('entries', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('timesheet_id');
-            $table->dateTime('clock_in')->nullable();
-            $table->dateTime('clock_out')->nullable();
+            //$table->dateTime('clock_in')->nullable();
+            //$table->dateTime('clock_out')->nullable();
             $table->longText('comments')->nullable();
             $table->timestamps();
         });

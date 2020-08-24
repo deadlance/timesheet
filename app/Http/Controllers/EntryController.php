@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use App\Timesheet;
 use App\Entry;
 use DateTime;
 
@@ -45,7 +46,28 @@ class EntryController extends Controller
      */
     public function store(Request $request)
     {
+        $timesheet_id = $request->timesheet_id;
+        $entry_date = $request->entry_date;
+        $activity = new DateTime($entry_date . ' ' . $request->activity);
+        $comments = $request->comments;
 
+        // If the time is a duplicate, we need to update the comments, not add a new entry.
+        $exists = Entry::where('timesheet_id', $timesheet_id)->where('activity', $activity)->first();
+        if($exists) {
+            $entry = $exists;
+            $entry->comments = $comments;
+            $entry->save();
+        }
+        else {
+            $entry = new Entry;
+            $entry->timesheet_id = $timesheet_id;
+            $entry->activity = $activity;
+            $entry->comments = $comments;
+            $entry->save();
+        }
+
+        $timesheet = Timesheet::where('id', $timesheet_id)->first();
+        return redirect('/timesheet/' . $timesheet->id . '/edit');
     }
 
     /**
@@ -88,8 +110,24 @@ class EntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Entry $entry)
     {
-        //
+        $timesheet_id = $entry->timesheet_id;
+        $entry->delete();
+
+        $timesheet = Timesheet::where('id', $timesheet_id)->first();
+        return redirect('/timesheet/' . $timesheet->id . '/edit');
+
+
+    }
+
+    /**
+     * Calculate the amount of time between clock_in and clock_out
+     *
+     */
+    public function time_worked(DateTime $clock_in, DateTime $clock_out)
+    {
+        $diff = $clock_in->diff($clock_out);
+        return ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
     }
 }
